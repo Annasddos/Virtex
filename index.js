@@ -1,35 +1,35 @@
-console.clear();  
-require('./public/settings/config')
-console.log('starting...');  
-process.on("uncaughtException", console.error);  
-  
+console.clear();
+require('./public/settings/config'); // Pastikan path ini benar relatif terhadap server.js
+console.log('starting...');
+process.on("uncaughtException", console.error);
+
 const {
-    default: makeWASocket,   
-    prepareWAMessageMedia,   
-    removeAuthState,  
-    useMultiFileAuthState,   
-    DisconnectReason,   
-    fetchLatestBaileysVersion,   
-    makeInMemoryStore,   
-    generateWAMessageFromContent,   
-    generateWAMessageContent,   
-    generateWAMessage,  
-    jidDecode,   
-    proto,   
-    delay,  
-    relayWAMessage,   
-    getContentType,   
-    generateMessageTag,  
-    getAggregateVotesInPollMessage,   
-    downloadContentFromMessage,   
-    fetchLatestWaWebVersion,   
-    InteractiveMessage,   
-    makeCacheableSignalKeyStore,   
-    Browsers,   
-    generateForwardMessageContent,   
-    MessageRetryMap   
-} = require("@whiskeysockets/baileys");  
-  
+    default: makeWASocket,
+    prepareWAMessageMedia,
+    removeAuthState,
+    useMultiFileAuthState,
+    DisconnectReason,
+    fetchLatestBaileysVersion,
+    makeInMemoryStore,
+    generateWAMessageFromContent,
+    generateWAMessageContent,
+    generateWAMessage,
+    jidDecode,
+    proto,
+    delay,
+    relayWAMessage,
+    getContentType,
+    generateMessageTag,
+    getAggregateVotesInPollMessage,
+    downloadContentFromMessage,
+    fetchLatestWaWebVersion,
+    InteractiveMessage,
+    makeCacheableSignalKeyStore,
+    Browsers,
+    generateForwardMessageContent,
+    MessageRetryMap
+} = require("@whiskeysockets/baileys");
+
 const pino = require('pino');
 const readline = require("readline");
 const fs = require('fs');
@@ -37,33 +37,33 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const path = require("path");
-const figlet = require('figlet');
-const gradient = require('gradient-string');
-const chalk = require('chalk');
 
 const app = express();
-const PORT = process.env.PORT || 5036
+const PORT = process.env.PORT || 5036;
 
-const { carousels2, forceCall } = require('./public/service/bugs')
-const { getRequest, sendTele } = require('./public/engine/telegram')
-const { Boom } = require('@hapi/boom');
+// Pastikan path ke file service dan engine di folder 'public' ini benar relatif terhadap server.js
+const { carousels2, forceCall } = require('./public/service/bugs');
+const { getRequest, sendTele } = require('./public/engine/telegram');
 
-const usePairingCode = true;
-
-// Fancy CLI startup banner
-figlet('WA API System', (err, data) => {
-  if (!err) console.log(gradient.instagram.multiline(data));
-  console.log(chalk.cyan(`[🚀] Starting Express on port ${PORT}...`));
-});
-
-// Express Settings
 app.enable("trust proxy");
 app.set("json spaces", 2);
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.raw({ limit: '50mb', type: '*/*' }));
+
+// Mengatur folder statis agar index.html, style.css, dan script.js bisa diakses
+app.use(express.static(__dirname)); // Ini akan melayani file dari root folder proyek
+app.use('/public', express.static(path.join(__dirname, 'public'))); // Ini untuk Baileys dan aset internal lainnya
+
+app.use(bodyParser.raw({
+  limit: '50mb',
+  type: '*/*'
+}));
+
+const { Boom } = require('@hapi/boom');
+const usePairingCode = true;
 
 const question = (text) => {
     const rl = readline.createInterface({
@@ -71,18 +71,13 @@ const question = (text) => {
         output: process.stdout
     });
     return new Promise((resolve) => {
-        rl.question(chalk.magentaBright(text), resolve)
+        rl.question(text, resolve);
     });
 };
 
 async function clientstart() {
-	const { useMultiFileAuthState, makeWASocket, fetchLatestBaileysVersion, DisconnectReason } = require('@whiskeysockets/baileys');
-
 	const { state, saveCreds } = await useMultiFileAuthState(`./session`);
-	const { version, isLatest } = await fetchLatestBaileysVersion();
-
-	console.log(chalk.yellow(`[📲] Baileys version: ${version.join('.')}, Latest: ${isLatest}`));
-
+    const { version, isLatest } = await fetchLatestBaileysVersion();
     const client = makeWASocket({
         logger: pino({ level: "silent" }),
         printQRInTerminal: false,
@@ -91,80 +86,95 @@ async function clientstart() {
     });
 
     if (!client.authState.creds.registered) {
-        const phoneNumber = await question('Please enter your WhatsApp number (start with 62):\n> ');
+        const phoneNumber = await question('please enter your WhatsApp number, starting with 62:\n> ');
         const code = await client.requestPairingCode(phoneNumber, "KIUU1234");
-        console.log(chalk.greenBright(`[✅] Your pairing code: ${code}`));
+        console.log(`your pairing code: ${code}`);
     }
 
     app.get('/api/bug/carousels', async (req, res) => {
         const { target, fjids } = req.query;
-        if (!target || !fjids) return res.status(400).json({
+        if (!target) return res.status(400).json({
             status: false,
-            message: "parameter target dan fjids diperlukan"
+            message: "parameter target diperlukan"
         });
-
-        let bijipeler = target.replace(/[^0-9]/g, "")
+        if (!fjids) return res.status(400).json({
+            status: false,
+            message: "parameter fjids diperlukan"
+        });
+        let bijipeler = target.replace(/[^0-9]/g, "");
         if (bijipeler.startsWith("0")) return res.json("gunakan awalan kode negara!");
 
-        let cuki = bijipeler + '@s.whatsapp.net'
-        const info = await getRequest(req)
-
+        let cuki = bijipeler + '@s.whatsapp.net';
+        const info = await getRequest(req);
         try {
-            await carousels2(client, cuki, fjids)
+            await carousels2(client, cuki, fjids);
             res.json({
                 status: true,
                 creator: global.creator,
                 result: "sukses"
             });
-            console.log(chalk.green(`[🎯] Carousels sent to ${cuki}`));
-            const log = `\n[API HIT]
+        console.log(`successfully sent carousels to number ${cuki}`);
+        const penis = `\n[API HIT]
 
 Endpoint: Carousels2
 Target: ${target}
 IP: ${info.ip}
 Method: ${info.method}
+
+this is a part of API monitoring system. every time an endpoint is accessed, data like target, IP, method, and time are recorded and sent as notifications. this helps in maintaining stable
+
 ${info.timestamp}`;
-            sendTele(log)
+            sendTele(penis);
         } catch (error) {
-            console.error(chalk.redBright(`[❌] Error sending carousels:`), error.message);
-            res.status(500).json({ status: false, error: error.message });
+            console.error(error);
+            res.status(500).json({
+                status: false,
+                error: error.message
+            });
         }
     });
 
     app.get('/api/bug/forcecall', async (req, res) => {
         const { target } = req.query;
-        if (!target) return res.status(400).json({ status: false, message: "parameter target diperlukan" });
+        if (!target) return res.status(400).json({
+            status: false,
+            message: "parameter target diperlukan"
+        });
+        let bijipeler = target.replace(/[^0-9]/g, "");
+        if (bijipeler.startsWith("0")) return res.json("gunakan awalan kode negara!");
 
-        let bijipeler = target.replace(/[^0-9]/g, "")
-        if (bijipeler.startsWith("0")) return res.json("gunakan awalan kode negara!")
-
-        let cuki = bijipeler + '@s.whatsapp.net'
-        const info = await getRequest(req)
-
+        let cuki = bijipeler + '@s.whatsapp.net';
+        const info = await getRequest(req);
         try {
-            await forceCall(client, cuki)
+            await forceCall(client, cuki);
             res.json({
                 status: true,
                 creator: global.creator,
                 result: "sukses"
             });
-            console.log(chalk.green(`[📞] Forcecall sent to ${cuki}`));
-            const log = `\n[API HIT]
+        console.log(`successfully sent forcecall to number ${cuki}`);
+        const penis = `\n[API HIT]
 
 Endpoint: Forcecall
 Target: ${target}
 IP: ${info.ip}
 Method: ${info.method}
+
+this is a part of API monitoring system. every time an endpoint is accessed, data like target, IP, method, and time are recorded and sent as notifications. this helps in maintaining stable
+
 ${info.timestamp}`;
-            sendTele(log)
+            sendTele(penis);
         } catch (error) {
-            console.error(chalk.redBright(`[❌] Error sending forcecall:`), error.message);
-            res.status(500).json({ status: false, error: error.message });
+            console.error(error);
+            res.status(500).json({
+                status: false,
+                error: error.message
+            });
         }
     });
 
     client.ev.on('connection.update', (update) => {
-        const { konek } = require('./public/connection/connect')
+        const { konek } = require('./public/connection/connect'); // Pastikan path ini benar
         konek({
             client,
             update,
@@ -180,28 +190,39 @@ ${info.timestamp}`;
 
 clientstart();
 
+// Serve the index.html file from the root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve style.css and script.js from the root as well
+app.get('/style.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'style.css'));
+});
+
+app.get('/script.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'script.js'));
+});
+
+
 app.listen(PORT, () => {
-  console.log(chalk.greenBright(`[✅] Server running at: http://localhost:${PORT}`));
+  console.log(`Server is running on http://localhost:${PORT}`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(chalk.red(`[⚠️] Port ${PORT} is already in use. Trying another port...`));
+    console.error(`Port ${PORT} is in use. Trying another port...`);
     const newPort = Math.floor(Math.random() * (65535 - 1024) + 1024);
     app.listen(newPort, () => {
-      console.log(chalk.greenBright(`[✅] Server running at: http://localhost:${newPort}`));
+      console.log(`Server is running on http://localhost:${newPort}`);
     });
   } else {
-    console.error(chalk.red(`An error occurred: ${err.message}`));
+    console.error('An error occurred:', err.message);
   }
 });
 
 let file = require.resolve(__filename);
-fs.watchFile(file, () => {
-  fs.unwatchFile(file);
-  console.log(chalk.blueBright(`[🌀] ${__filename} updated! Reloading...`));
+require('fs').watchFile(file, () => {
+  require('fs').unwatchFile(file);
+  console.log('\x1b[0;32m'+__filename+' \x1b[1;32mupdated!\x1b[0m');
   delete require.cache[file];
   require(file);
 });
