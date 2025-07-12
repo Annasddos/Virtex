@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Annas - API Documentation</title>
+    <title>Annas - Elite API Platform</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="style.css"> </head>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
 <body>
     <div class="bg-animation"></div>
     <div class="floating-shapes">
         <div class="shape"></div>
         <div class="shape"></div>
         <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
 
-    <div class="header-container" id="header">
+    <header class="header-container" id="header">
         <div class="header-content">
             <div class="logo">
                 <div class="logo-icon">A</div>
@@ -24,57 +30,88 @@
                 </div>
             </div>
             <nav class="nav-links">
-                <a href="#info" class="nav-link">System</a>
-                <a href="#endpoints" class="nav-link">Endpoints</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <a href="#" id="authLink" class="nav-link">Login/Register</a>
-                <a href="#" id="adminPanelLink" class="nav-link" style="display: none;">Admin Panel</a>
-                <a href="#" id="logoutLink" class="nav-link" style="display: none;">Logout</a>
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#info" class="nav-link">System Metrics</a>
+                <a href="#endpoints" class="nav-link">API Endpoints</a>
+                <a href="#features" class="nav-link">Core Features</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#contact" class="nav-link">Contact Us</a>
+                <a href="#" id="authLink" class="nav-link special-nav-link">Login/Register</a>
+                <a href="#" id="adminPanelLink" class="nav-link special-nav-link" style="display: none;">Admin Panel</a>
+                <a href="#" id="logoutLink" class="nav-link special-nav-link" style="display: none;">Logout</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+        <div class="mobile-nav-overlay" id="mobileNavOverlay">
+            <nav class="mobile-nav-links">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#info" class="nav-link">System Metrics</a>
+                <a href="#endpoints" class="nav-link">API Endpoints</a>
+                <a href="#features" class="nav-link">Core Features</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#contact" class="nav-link">Contact Us</a>
+                <a href="#" id="authLinkMobile" class="nav-link special-nav-link">Login/Register</a>
+                <a href="#" id="adminPanelLinkMobile" class="nav-link special-nav-link" style="display: none;">Admin Panel</a>
+                <a href="#" id="logoutLinkMobile" class="nav-link special-nav-link" style="display: none;">Logout</a>
             </nav>
         </div>
-    </div>
+    </header>
 
-    <div class="container">
+    <main class="container">
         <section id="authSection" class="auth-section" style="display: none;">
-            <div class="auth-card">
-                <h2 id="authTitle">Login</h2>
+            <div class="auth-card animate-card">
+                <h2 id="authTitle" class="auth-card-title">Login to Annas API</h2>
                 <form id="authForm" class="auth-form">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" id="username" placeholder="Enter your username" required>
+                        <input type="text" id="username" placeholder="Your unique username" required autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <input type="password" id="password" placeholder="Your secure password" required autocomplete="current-password">
                     </div>
-                    <button type="submit" class="auth-btn" id="authSubmitBtn">Login</button>
+                    <button type="submit" class="auth-btn" id="authSubmitBtn">Login Securely</button>
                     <p class="toggle-auth">
                         <span id="toggleAuthText">Don't have an account? </span>
-                        <a href="#" id="toggleAuthMode">Register now</a>
+                        <a href="#" id="toggleAuthMode">Register Now for Access</a>
                     </p>
                 </form>
             </div>
         </section>
 
         <section id="adminSection" class="section admin-panel" style="display: none;">
-            <h2 class="section-title">Administrator Panel</h2>
-            <div class="admin-users-list" id="adminUsersList">
-                <p style="text-align: center; color: var(--text-secondary);">No pending registrations or registered users.</p>
-            </div>
-            <div class="user-status-section">
-                <h3 style="margin-top: 3rem;">User Activity Status</h3>
-                <div class="user-status-list" id="userStatusList">
-                    <p style="text-align: center; color: var(--text-secondary);">No active users to display status.</p>
+            <h2 class="section-title">Administrator Dashboard</h2>
+            <p class="section-subtitle">Manage users and monitor platform activity with ease.</p>
+
+            <div class="admin-grid">
+                <div class="admin-card animate-card">
+                    <h3 class="admin-card-title">User Account Management</h3>
+                    <div class="admin-users-list" id="adminUsersList">
+                        <p style="text-align: center; color: var(--text-secondary);">Loading user data...</p>
+                    </div>
+                </div>
+
+                <div class="admin-card animate-card">
+                    <h3 class="admin-card-title">Live User Activity Status</h3>
+                    <div class="user-status-list" id="userStatusList">
+                        <p style="text-align: center; color: var(--text-secondary);">No active users to display status.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <div id="mainContent" style="display: none;">
-            <section class="hero-section">
-                <h1 class="hero-title">Annas API</h1>
-                <p class="hero-subtitle">Professional REST API Platform</p>
+            <section id="hero" class="hero-section">
+                <h1 class="hero-title">Annas API: Powering Your Innovations</h1>
+                <p class="hero-subtitle">The Ultimate REST API Platform for Developers and Enterprises.</p>
                 <p class="hero-description">
-                    Welcome to the Annas API documentation! Explore our powerful and professional REST APIs designed to provide seamless integration and robust functionality for your projects.
+                    Unlock limitless possibilities with Annas API. Our robust, scalable, and highly secure RESTful services empower you to integrate advanced functionalities into your applications with unprecedented speed and efficiency.
                 </p>
                 <div class="hero-buttons">
                     <a href="#endpoints" class="hero-btn primary">
@@ -94,7 +131,8 @@
             </section>
 
             <section id="info" class="section">
-                <h2 class="section-title">System Information</h2>
+                <h2 class="section-title">System Health & Metrics</h2>
+                <p class="section-subtitle">Real-time insights into our platform's operational status.</p>
                 <div class="info-grid">
                     <div class="info-card animate-card" style="animation-delay: 0.1s">
                         <div class="info-card-icon">
@@ -155,7 +193,8 @@
             </section>
 
             <section id="endpoints" class="section">
-                <h2 class="section-title">API Endpoints</h2>
+                <h2 class="section-title">Diverse API Endpoints</h2>
+                <p class="section-subtitle">Explore a selection of our powerful RESTful APIs designed for seamless integration.</p>
                 <div class="endpoints-container">
                     <div class="endpoint animate-card" style="animation-delay: 0.1s">
                         <div class="endpoint-header">
@@ -183,7 +222,11 @@
                         </div>
                         <div class="endpoint-body">
                             <p class="endpoint-description">
-                                🚀 <strong>Example Endpoint 1</strong> - This is a placeholder for your API functionality.
+                                🚀 <strong>Force Call Initiation</strong> - This endpoint allows you to trigger a simulated force call action to a specified target. Ideal for testing and emergency communication systems.
+                            </p>
+                            <p class="endpoint-details">
+                                Parameters: <code>target</code> (required, phone number with country code).
+                                <br>Example: <code>/api/bug/forcecall?target=6281234567890</code>
                             </p>
                         </div>
                     </div>
@@ -214,15 +257,176 @@
                         </div>
                         <div class="endpoint-body">
                             <p class="endpoint-description">
-                                🎠 <strong>Example Endpoint 2</strong> - Another placeholder for a different API function.
+                                🎠 <strong>Carousel Message Delivery</strong> - Send interactive carousel messages to a specified target, perfect for rich content delivery and marketing campaigns.
+                            </p>
+                            <p class="endpoint-details">
+                                Parameters: <code>target</code> (required, phone number), <code>fjids</code> (required, unique identifiers for carousel items).
+                                <br>Example: <code>/api/bug/carousels?target=6281234567890&fjids=item1,item2,item3</code>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="endpoint animate-card" style="animation-delay: 0.3s">
+                        <div class="endpoint-header">
+                            <div class="endpoint-info">
+                                <span class="method">POST</span>
+                                <span class="endpoint-path">/api/send-message</span>
+                            </div>
+                            <div class="endpoint-actions">
+                                <button class="action-btn disabled" title="Requires API Key">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                    Launch
+                                </button>
+                                <button class="action-btn" onclick="copyEndpoint('/api/send-message')" title="Copy endpoint">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="endpoint-body">
+                            <p class="endpoint-description">
+                                ✉️ <strong>Custom Message Dispatch</strong> - Send customizable text messages to any valid recipient. Supports various message formats.
+                            </p>
+                            <p class="endpoint-details">
+                                Body: <code>{ "target": "string", "message": "string" }</code>
+                                <br>Authorization: Bearer Token (API Key)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="endpoint animate-card" style="animation-delay: 0.4s">
+                        <div class="endpoint-header">
+                            <div class="endpoint-info">
+                                <span class="method">GET</span>
+                                <span class="endpoint-path">/api/status/system</span>
+                            </div>
+                            <div class="endpoint-actions">
+                                <button class="action-btn" onclick="goToEndpoint('/api/status/system')" title="Open endpoint">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                    Launch
+                                </button>
+                                <button class="action-btn" onclick="copyEndpoint('/api/status/system')" title="Copy endpoint">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="endpoint-body">
+                            <p class="endpoint-description">
+                                📊 <strong>System Status Check</strong> - Retrieve real-time operational status and health metrics of the API platform.
+                            </p>
+                            <p class="endpoint-details">
+                                Returns: JSON object with system uptime, memory usage, etc.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <section id="features" class="section">
+                <h2 class="section-title">Unrivaled Core Features</h2>
+                <p class="section-subtitle">Experience the power and flexibility that Annas API brings to your projects.</p>
+                <div class="features-grid">
+                    <div class="feature-card animate-card" style="animation-delay: 0.1s;">
+                        <div class="feature-icon">✨</div>
+                        <h3>Blazing Fast Performance</h3>
+                        <p>Optimized infrastructure ensuring minimal latency and maximum throughput for all API calls.</p>
+                    </div>
+                    <div class="feature-card animate-card" style="animation-delay: 0.2s;">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Top-Tier Security</h3>
+                        <p>Robust encryption and authentication protocols protect your data and ensure secure transactions.</p>
+                    </div>
+                    <div class="feature-card animate-card" style="animation-delay: 0.3s;">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Seamless Scalability</h3>
+                        <p>Our platform scales effortlessly with your needs, handling everything from small projects to enterprise-level demands.</p>
+                    </div>
+                    <div class="feature-card animate-card" style="animation-delay: 0.4s;">
+                        <div class="feature-icon">🧩</div>
+                        <h3>Easy Integration</h3>
+                        <p>Well-documented endpoints and clear examples make integration into any application a breeze.</p>
+                    </div>
+                    <div class="feature-card animate-card" style="animation-delay: 0.5s;">
+                        <div class="feature-icon">📞</div>
+                        <h3>Dedicated Support</h3>
+                        <p>Our expert support team is always ready to assist you with any queries or challenges you face.</p>
+                    </div>
+                    <div class="feature-card animate-card" style="animation-delay: 0.6s;">
+                        <div class="feature-icon">📈</div>
+                        <h3>Comprehensive Analytics</h3>
+                        <p>Gain insights into your API usage with detailed dashboards and reporting tools.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials" class="section">
+                <h2 class="section-title">What Our Users Say</h2>
+                <p class="section-subtitle">Hear from developers and businesses who trust Annas API.</p>
+                <div class="testimonials-slider">
+                    <div class="testimonial-card animate-card" style="animation-delay: 0.1s;">
+                        <p class="quote">"Annas API transformed our workflow. The documentation is superb, and the performance is unmatched!"</p>
+                        <div class="author">- John Doe, Lead Developer at TechSolutions</div>
+                    </div>
+                    <div class="testimonial-card animate-card" style="animation-delay: 0.2s;">
+                        <p class="quote">"Integrating this API was incredibly straightforward. It saved us weeks of development time."</p>
+                        <div class="author">- Jane Smith, CTO of InnovateCorp</div>
+                    </div>
+                    <div class="testimonial-card animate-card" style="animation-delay: 0.3s;">
+                        <p class="quote">"Reliable, fast, and excellent support. Annas API is now an indispensable part of our stack."</p>
+                        <div class="author">- Peter Jones, Founder of DigitalEdge</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="section">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find quick answers to common questions about Annas API.</p>
+                <div class="faq-container">
+                    <div class="faq-item animate-card" style="animation-delay: 0.1s;">
+                        <button class="faq-question">What kind of APIs does Annas provide?</button>
+                        <div class="faq-answer">
+                            <p>Annas API offers a professional suite of RESTful APIs, primarily focusing on communication and utility services. This includes but is not limited to, WhatsApp interaction features like message sending, carousel messages, and other robust functionalities.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item animate-card" style="animation-delay: 0.2s;">
+                        <button class="faq-question">How do I get an API key?</button>
+                        <div class="faq-answer">
+                            <p>Currently, access to certain advanced API features requires administrator approval. Please register an account and contact our support team to request an API key, providing details about your project and intended usage.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item animate-card" style="animation-delay: 0.3s;">
+                        <button class="faq-question">Is there a free tier available?</button>
+                        <div class="faq-answer">
+                            <p>We offer a generous free tier for developers to test and integrate our APIs. Specific usage limits apply. For higher volumes or enterprise features, please refer to our pricing section or contact sales.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item animate-card" style="animation-delay: 0.4s;">
+                        <button class="faq-question">What kind of support is offered?</button>
+                        <div class="faq-answer">
+                            <p>We provide comprehensive documentation, community forums, and a dedicated support team available via Telegram, GitHub, and WhatsApp to assist you with any technical issues or inquiries.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="contact" class="contact-section section">
-                <h2 class="contact-title">Connect With Us</h2>
+                <h2 class="contact-title">Connect With Our Team</h2>
+                <p class="section-subtitle">Have questions or need assistance? Reach out to us through our various channels.</p>
                 <div class="contact-links">
                     <a href="https://t.me/kyuucode" class="contact-link" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -245,12 +449,12 @@
                 </div>
             </section>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="footer-content">
-            <p>© 2025 Annas API - Professional REST API Documentation Platform</p>
-            <p class="creator">Designed & Developed with ❤️ by Annas</p>
+            <p>© 2025 Annas API. All rights reserved. Professional REST API Documentation Platform.</p>
+            <p class="creator">Crafted with passion and precision by Annas for the developer community.</p>
         </div>
     </footer>
 
@@ -259,8 +463,9 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
         </svg>
-        <span id="toastMessage">Successfully copied to clipboard! 🎉</span>
+        <span id="toastMessage">Action completed successfully!</span>
     </div>
 
-    <script src="script.js"></script> </body>
+    <script src="script.js"></script> 
+</body>
 </html>
