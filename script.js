@@ -1,5 +1,6 @@
 // --- Core UI Functions (from original code) ---
 const header = document.getElementById('header');
+
 window.addEventListener('scroll', () => {
     if (window.scrollY > 100) {
         header.classList.add('scrolled');
@@ -9,6 +10,7 @@ window.addEventListener('scroll', () => {
 });
 
 const batteryElement = document.getElementById('battery');
+
 if ('getBattery' in navigator) {
     navigator.getBattery().then(battery => {
         updateBatteryInfo(battery);
@@ -18,6 +20,7 @@ if ('getBattery' in navigator) {
 } else {
     batteryElement.innerHTML = '<span style="color: var(--text-secondary)">Not Available</span>';
 }
+
 function updateBatteryInfo(battery) {
     const level = Math.floor(battery.level * 100);
     const charging = battery.charging ? '⚡ Charging' : '🔋 Battery';
@@ -25,6 +28,7 @@ function updateBatteryInfo(battery) {
 }
 
 const timeElement = document.getElementById('time');
+
 function updateTime() {
     const now = new Date();
     const options = { 
@@ -39,11 +43,13 @@ function updateTime() {
     };
     timeElement.textContent = now.toLocaleDateString('en-US', options);
 }
+
 updateTime();
 setInterval(updateTime, 1000);
 
 const ipElement = document.getElementById('ip');
 const regionElement = document.getElementById('region');
+
 fetch('https://ipapi.co/json/')
     .then(response => response.json())
     .then(data => {
@@ -73,6 +79,7 @@ function goToEndpoint(path) {
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 let toastTimeout;
+
 function showToast(message, type = 'success') {
     clearTimeout(toastTimeout);
     toastMessage.textContent = message;
@@ -94,6 +101,7 @@ const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
 };
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -101,6 +109,7 @@ const observer = new IntersectionObserver((entries) => {
         }
     });
 }, observerOptions);
+
 document.querySelectorAll('.section, .animate-card').forEach(el => {
     observer.observe(el);
 });
@@ -140,7 +149,7 @@ window.addEventListener('scroll', () => {
 const AUTH_KEY = 'annas_users';
 const CURRENT_USER_KEY = 'annas_current_user';
 const ADMIN_USERNAME = 'Anas';
-const ADMIN_PASSWORD = '1admin'; // In a real app, this would be hashed and stored securely
+const ADMIN_PASSWORD = '1admin'; // WARNING: In a real app, this should be hashed and stored securely on the backend.
 
 const authSection = document.getElementById('authSection');
 const adminSection = document.getElementById('adminSection');
@@ -216,8 +225,7 @@ function showContentForUser() {
         authSection.style.display = 'none';
         adminSection.style.display = 'none';
         mainContent.style.display = 'block';
-        showToast(`Welcome, ${currentUser.username}! You can now access API documentation.`, 'success');
-        // Simulate activity
+        // Simulate initial activity
         simulateUserActivity(currentUser.username, 'Viewing API Endpoints');
     } else if (currentUser && currentUser.role === 'admin') {
         authSection.style.display = 'none';

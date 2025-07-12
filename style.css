@@ -539,6 +539,16 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     gap: 2rem;
+    /* Added animation for contact links */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Animation for individual links when parent is visible */
+.contact-section.visible .contact-link {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .contact-link {
@@ -555,6 +565,9 @@ body {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    /* Initial state for individual link animation */
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 .contact-link:hover {
